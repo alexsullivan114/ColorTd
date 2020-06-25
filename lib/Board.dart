@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
-import 'package:colortd/Positioned.dart';
+import 'package:colortd/GridPainter.dart';
+import 'package:colortd/Positionable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,7 +29,6 @@ class _BoardState extends State<Board> {
     });
   }
 
-
   @override
   void dispose() {
     super.dispose();
@@ -36,12 +37,14 @@ class _BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: CustomPaint(
-        size: Size.fromRadius(400),
-        painter: BoardPainter(enemies)
-      ),
+    return Center(
+      child: LayoutBuilder(builder: (context, constraints){
+        final boxSize = min(constraints.maxHeight, constraints.maxWidth);
+        return CustomPaint(
+          size: Size(boxSize, boxSize),
+          painter: GridPainter()
+        );
+      }),
     );
   }
 }
