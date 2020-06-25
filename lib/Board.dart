@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:colortd/GridPainter.dart';
-import 'package:colortd/Positionable.dart';
+import 'package:colortd/grid/grid_painter.dart';
+import 'package:colortd/positionable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'BoardPainter.dart';
-import 'Enemy.dart';
+import 'board_painter.dart';
+import 'constants.dart';
+import 'enemy.dart';
 
 class Board extends StatefulWidget {
   @override
@@ -38,16 +39,20 @@ class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: LayoutBuilder(builder: (context, constraints){
-        final boxSize = min(constraints.maxHeight, constraints.maxWidth);
-        return CustomPaint(
-          size: Size(boxSize, boxSize),
-          painter: GridPainter()
-        );
-      }),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: LayoutBuilder(builder: (context, constraints) {
+          final gridSize = min(constraints.maxWidth / HORIZONTAL_GRID_COUNT,
+              constraints.maxHeight / HORIZONTAL_GRID_COUNT);
+          final verticalGridCount = (constraints.maxHeight / gridSize).floor();
+          final horizontalGridCount = (constraints.maxWidth / gridSize).floor();
+          return CustomPaint(
+              size: Size(
+                  horizontalGridCount * gridSize, verticalGridCount * gridSize),
+              painter:
+                  GridPainter(verticalGridCount, horizontalGridCount, gridSize));
+        }),
+      ),
     );
   }
 }
-
-
-

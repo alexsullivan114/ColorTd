@@ -1,0 +1,1 @@
+const int HORIZONTAL_GRID_COUNT = 20;

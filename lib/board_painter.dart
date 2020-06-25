@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:colortd/Enemy.dart';
+import 'package:colortd/enemy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'Positionable.dart';
+import 'positionable.dart';
 
 class BoardPainter extends CustomPainter {
   final List<Positionable<Enemy>> _enemies;

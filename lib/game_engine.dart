@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import 'Enemy.dart';
-import 'Level.dart';
-import 'Positionable.dart';
+import 'enemy.dart';
+import 'level.dart';
+import 'positionable.dart';
 
 class GameEngine {
   final Size boardSize;
