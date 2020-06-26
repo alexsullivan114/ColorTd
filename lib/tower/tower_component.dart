@@ -13,5 +13,11 @@ class TowerComponent extends PositionComponent {
       ..style = PaintingStyle.fill;
 
     c.drawRect(Rect.fromLTWH(100, 100, 50, 50), paint);
+    c.drawRect(Rect.fromLTWH(100, 200, 50, 50), paint);
+    c.drawRect(Rect.fromLTWH(200, 200, 50, 50), paint);
+    c.drawRect(Rect.fromLTWH(200, 300, 50, 50), paint);
+    c.drawRect(Rect.fromLTWH(200, 400, 50, 50), paint);
+    c.drawRect(Rect.fromLTWH(100, 300, 50, 50), paint);
+    c.drawRect(Rect.fromLTWH(100, 400, 50, 50), paint);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:colortd/enemy/enemy_creator_component.dart';
+import 'package:colortd/enemy/enemy_destination_component.dart';
 import 'package:colortd/grid/board_grid_component.dart';
 import 'package:colortd/tower/tower_component.dart';
 import 'package:flame/components/component.dart';
@@ -9,8 +10,8 @@ import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector {
   GameEngine() {
-    add(BoardGridComponent());
     add(EnemyCreatorComponent());
+    add(EnemyDestinationComponent());
     add(EnemyComponent());
     add(TowerComponent());
   }
