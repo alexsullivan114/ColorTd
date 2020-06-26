@@ -13,21 +13,15 @@ import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector {
   static final t1 = TowerComponent()
-    ..x = 100
+    ..x = 0
     ..y = 100
-    ..width = 50
+    ..width = 300
     ..height = 50;
 
   static final t2 = TowerComponent()
     ..x = 100
     ..y = 200
-    ..width = 50
-    ..height = 50;
-
-  static final t3 = TowerComponent()
-    ..x = 200
-    ..y = 200
-    ..width = 50
+    ..width = 400
     ..height = 50;
 
   static final t4 = TowerComponent()
@@ -49,12 +43,12 @@ class GameEngine extends BaseGame with TapDetector {
     ..height = 50;
 
   static final t7 = TowerComponent()
-    ..x = 100
+    ..x = 0
     ..y = 400
-    ..width = 50
+    ..width = 350
     ..height = 50;
 
-  final towers = [t1, t2, t3, t4, t5, t6, t7];
+  final towers = [t1, t2, t4, t5, t6, t7];
   final enemy = EnemyComponent();
   final coordinator = EnemyMovementCoordinator();
 
