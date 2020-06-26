@@ -11,7 +11,6 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
 
   @override
   void render(Canvas c) {
-    print("Rendering an enemy");
     final paint = Paint()
       ..color = Colors.green
       ..strokeWidth = 2
