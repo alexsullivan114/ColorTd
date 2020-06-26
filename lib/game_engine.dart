@@ -1,24 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:colortd/enemy/enemy_creator_component.dart';
+import 'package:colortd/grid/board_grid_component.dart';
+import 'package:flame/components/component.dart';
+import 'package:flame/game.dart';
+import 'package:flame/gestures.dart';
 
-import 'enemy.dart';
-import 'level.dart';
-import 'positionable.dart';
+import 'enemy/enemy_component.dart';
 
-class GameEngine {
-  final Size boardSize;
-  final Level level = level1;
-  List<Positionable<Enemy>> enemies;
-
-  GameEngine(this.boardSize) {
-    for (int i = 0; i < level.enemies.length; i++) {
-      final enemy = level.enemies[i];
-      final dx = level.enemyDx * -i;
-      final positionedEnemy = Positionable(enemy, dx, boardSize.height ~/ 2);
-      enemies.insert(i, positionedEnemy);
-    }
+class GameEngine extends BaseGame with TapDetector {
+  GameEngine() {
+    add(BoardGridComponent());
+    add(EnemyCreatorComponent());
+    add(EnemyComponent());
   }
 
-  void tick() {
-
+  void remove(Component c) {
+    components.remove(c);
   }
 }
