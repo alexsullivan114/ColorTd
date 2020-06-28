@@ -20,19 +20,11 @@ class EnemyMovementCoordinator {
     // Now remove all of the points occupied by towers
     for (TowerComponent component in towers) {
       final rect = component.toRect();
-      print("Rect: " + rect.toString());
       // Remove each point in the component from the field
       for (int i = rect.left.toInt(); i < rect.left + rect.width; i++) {
         for (int j = rect.top.toInt(); j < rect.top + rect.height; j++) {
           Point point = Point(i, j);
           grid.remove(point);
-
-
-          // In addition to this, we need to filter out points around the
-          // tower that would be unable to be occupied by the given enemy. I think
-          // that means doing something like for the edges of the tower component,
-          // if that edge point - 20 for x and y intersects with the tower then
-          // it's also invalid
         }
       }
       // And now remove the impossible points on the top and left edges since that
@@ -84,35 +76,27 @@ class EnemyMovementCoordinator {
     this.vectorField = cameFrom;
   }
 
-  // TODO: To handle the clipping issue, when generating neighbors we could
-  // only generate neighbors whose bottom + 20 and right + 20 point is in
-  // the grid
-
-
-  // TODO: Another option would be to accept like a enemy size argument when
-  // constructing the field vector map and to remove nodes that wouldn't be possible
-  // to exist in with that size. We'd have to assume that the size stems from the
-  // top left point - like that's an assumption that we'd have to make for this
-  // to work.
   Set<Point> neighbors(Point point, Set<Point> grid) {
-//    final topLeft = Point(point.x - 1, point.y - 1);
-//    final topRight = Point(point.x + 1, point.y - 1);
+    final topLeft = Point(point.x - 1, point.y - 1);
+    final topRight = Point(point.x + 1, point.y - 1);
     final top = Point(point.x, point.y - 1);
     final left = Point(point.x - 1, point.y);
     final right = Point(point.x + 1, point.y);
-//    final bottomLeft = Point(point.x - 1, point.y + 1);
+    final bottomLeft = Point(point.x - 1, point.y + 1);
     final bottom = Point(point.x, point.y + 1);
-//    final bottomRight = Point(point.x + 1, point.y + 1);
+    final bottomRight = Point(point.x + 1, point.y + 1);
 
     final returnSet = Set<Point>();
-//    if (grid.contains(topLeft)) returnSet.add(topLeft);
-//    if (grid.contains(topRight)) returnSet.add(topRight);
+    if (grid.contains(bottom)) returnSet.add(bottom);
     if (grid.contains(top)) returnSet.add(top);
     if (grid.contains(left)) returnSet.add(left);
     if (grid.contains(right)) returnSet.add(right);
-//    if (grid.contains(bottomLeft)) returnSet.add(bottomLeft);
-    if (grid.contains(bottom)) returnSet.add(bottom);
-//    if (grid.contains(bottomRight)) returnSet.add(bottomRight);
+
+    if (grid.contains(topLeft)) returnSet.add(topLeft);
+    if (grid.contains(topRight)) returnSet.add(topRight);
+    if (grid.contains(bottomLeft)) returnSet.add(bottomLeft);
+    if (grid.contains(bottomRight)) returnSet.add(bottomRight);
+
     return returnSet;
   }
 }
