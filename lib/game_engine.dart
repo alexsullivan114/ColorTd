@@ -16,7 +16,7 @@ class GameEngine extends BaseGame with TapDetector {
   static final t1 = TowerComponent()
     ..x = 0
     ..y = 100
-    ..width = 80
+    ..width = 330
     ..height = 50;
 
   static final t2 = TowerComponent()

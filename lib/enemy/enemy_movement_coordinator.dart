@@ -37,7 +37,7 @@ class EnemyMovementCoordinator {
       }
       // And now remove the impossible points on the top and left edges since that
       // can intersect with our creator.
-      for (int i = rect.left.toInt() - enemySize; i < rect.left + rect.width + enemySize; i++) {
+      for (int i = rect.left.toInt() - enemySize; i < rect.left + rect.width; i++) {
         for (int j = 0; j < enemySize; j++) {
           Point point = Point(i, rect.top - j);
           grid.remove(point);
@@ -95,24 +95,24 @@ class EnemyMovementCoordinator {
   // top left point - like that's an assumption that we'd have to make for this
   // to work.
   Set<Point> neighbors(Point point, Set<Point> grid) {
-    final topLeft = Point(point.x - 1, point.y - 1);
-    final topRight = Point(point.x + 1, point.y - 1);
+//    final topLeft = Point(point.x - 1, point.y - 1);
+//    final topRight = Point(point.x + 1, point.y - 1);
     final top = Point(point.x, point.y - 1);
     final left = Point(point.x - 1, point.y);
     final right = Point(point.x + 1, point.y);
-    final bottomLeft = Point(point.x - 1, point.y + 1);
+//    final bottomLeft = Point(point.x - 1, point.y + 1);
     final bottom = Point(point.x, point.y + 1);
-    final bottomRight = Point(point.x + 1, point.y + 1);
+//    final bottomRight = Point(point.x + 1, point.y + 1);
 
     final returnSet = Set<Point>();
-    if (grid.contains(topLeft)) returnSet.add(topLeft);
-    if (grid.contains(topRight)) returnSet.add(topRight);
+//    if (grid.contains(topLeft)) returnSet.add(topLeft);
+//    if (grid.contains(topRight)) returnSet.add(topRight);
     if (grid.contains(top)) returnSet.add(top);
     if (grid.contains(left)) returnSet.add(left);
     if (grid.contains(right)) returnSet.add(right);
-    if (grid.contains(bottomLeft)) returnSet.add(bottomLeft);
+//    if (grid.contains(bottomLeft)) returnSet.add(bottomLeft);
     if (grid.contains(bottom)) returnSet.add(bottom);
-    if (grid.contains(bottomRight)) returnSet.add(bottomRight);
+//    if (grid.contains(bottomRight)) returnSet.add(bottomRight);
     return returnSet;
   }
 }
