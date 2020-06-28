@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:colortd/enemy/enemy_creator_component.dart';
 import 'package:colortd/enemy/enemy_destination_component.dart';
 import 'package:colortd/enemy/enemy_movement_coordinator.dart';
+import 'package:colortd/enemy/field_vector_component.dart';
 import 'package:colortd/tower/tower_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/game.dart';
@@ -15,7 +16,7 @@ class GameEngine extends BaseGame with TapDetector {
   static final t1 = TowerComponent()
     ..x = 0
     ..y = 100
-    ..width = 300
+    ..width = 80
     ..height = 50;
 
   static final t2 = TowerComponent()
@@ -45,7 +46,7 @@ class GameEngine extends BaseGame with TapDetector {
   static final t7 = TowerComponent()
     ..x = 0
     ..y = 400
-    ..width = 350
+    ..width = 300
     ..height = 50;
 
   final towers = [t1, t2, t4, t5, t6, t7];
@@ -55,9 +56,11 @@ class GameEngine extends BaseGame with TapDetector {
   GameEngine() {
     add(EnemyCreatorComponent());
     add(EnemyDestinationComponent());
-    add(enemy);
 
     towers.forEach((element) => add(element));
+//    add(FieldVectorComponent());
+
+    add(enemy);
   }
 
 
