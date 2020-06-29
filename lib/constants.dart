@@ -1,3 +1,2 @@
-const int HORIZONTAL_GRID_COUNT = 20;
-const int VERTICAL_GRID_COUNT = 20;
-const double ENEMY_SIZE = 20;
+final double enemySize = GRID_SIZE.toDouble();
+const GRID_SIZE = 30.0;

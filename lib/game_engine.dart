@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/enemy/enemy_creator_component.dart';
 import 'package:colortd/enemy/enemy_destination_component.dart';
 import 'package:colortd/enemy/enemy_movement_coordinator.dart';
 import 'package:colortd/enemy/field_vector_component.dart';
+import 'package:colortd/grid/board_grid_component.dart';
 import 'package:colortd/tower/tower_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/game.dart';
@@ -14,42 +16,9 @@ import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector {
   static final t1 = TowerComponent()
-    ..x = 0
-    ..y = 100
-    ..width = 330
-    ..height = 50;
+    ..gridRect = Rect.fromLTWH(4, 4, 5, 5);
 
-  static final t2 = TowerComponent()
-    ..x = 100
-    ..y = 200
-    ..width = 400
-    ..height = 50;
-
-  static final t4 = TowerComponent()
-    ..x = 200
-    ..y = 300
-    ..width = 50
-    ..height = 50;
-
-  static final t5 = TowerComponent()
-    ..x = 200
-    ..y = 400
-    ..width = 50
-    ..height = 50;
-
-  static final t6 = TowerComponent()
-    ..x = 100
-    ..y = 300
-    ..width = 50
-    ..height = 50;
-
-  static final t7 = TowerComponent()
-    ..x = 0
-    ..y = 400
-    ..width = 300
-    ..height = 50;
-
-  final towers = [t1, t2, t4, t5, t6, t7];
+  final towers = [t1];
   final enemy = EnemyComponent();
   final coordinator = EnemyMovementCoordinator();
 
@@ -59,6 +28,7 @@ class GameEngine extends BaseGame with TapDetector {
 
     towers.forEach((element) => add(element));
 //    add(FieldVectorComponent());
+    add(BoardGridComponent());
 
     add(enemy);
   }
@@ -76,7 +46,8 @@ class GameEngine extends BaseGame with TapDetector {
   @override
   void resize(Size size) {
     super.resize(size);
-    final endPoint = Point(size.width - 20, size.height - 20);
-    coordinator.calculateVectorField(towers, size, endPoint);
+    GridHelpers.size = size;
+    Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
+    coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
   }
 }

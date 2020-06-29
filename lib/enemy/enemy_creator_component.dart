@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:colortd/grid/GridHelper.dart';
+import 'package:colortd/constants.dart';
 import 'package:flame/components/component.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,7 @@ class EnemyCreatorComponent extends PositionComponent {
     ..strokeWidth = 2
     ..style = PaintingStyle.fill;
 
-    final rect = Rect.fromLTRB(0, 0, 20, 20);
+    final rect = GridHelpers.rect(GridPoint(0, 0));
     c.drawRect(rect, paint);
   }
 }
