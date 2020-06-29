@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:colortd/constants.dart';
 import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/enemy/enemy_creator_component.dart';
 import 'package:colortd/enemy/enemy_destination_component.dart';
@@ -29,7 +30,7 @@ class GameEngine extends BaseGame with TapDetector {
 
     towers.forEach((element) => add(element));
 //    add(FieldVectorComponent());
-    add(BoardGridComponent());
+//    add(BoardGridComponent());
 
     add(enemy);
   }
@@ -39,12 +40,15 @@ class GameEngine extends BaseGame with TapDetector {
   void update(double t) {
     super.update(t);
     elapsedTimeSinceLastUpdate += t;
-    if (elapsedTimeSinceLastUpdate > 0.8) {
+    if (elapsedTimeSinceLastUpdate > TICK_RATE) {
       final nextPoint = coordinator.vectorField[enemy.nextPoint];
       if (nextPoint != null) {
         enemy.nextPoint = nextPoint;
       }
+      enemy.percentToNextPoint = 0;
       elapsedTimeSinceLastUpdate = 0;
+    } else {
+      enemy.percentToNextPoint = elapsedTimeSinceLastUpdate / TICK_RATE;
     }
   }
 

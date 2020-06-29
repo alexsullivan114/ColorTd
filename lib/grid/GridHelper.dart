@@ -21,6 +21,14 @@ class GridHelpers {
         point.x * GRID_SIZE, point.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
   }
 
+  static Rect blendRect(GridPoint oldPoint, GridPoint newPoint, double percent) {
+    final oldRect = rect(oldPoint);
+    final newRect = rect(newPoint);
+    final xOffset = (newRect.left - oldRect.left) * percent;
+    final yOffset = (newRect.top - oldRect.top) * percent;
+    return oldRect.translate(xOffset, yOffset);
+  }
+
   static Rect rectFromGridRect(Rect rect) {
     final x = rect.left * GRID_SIZE;
     final y = rect.top * GRID_SIZE;
