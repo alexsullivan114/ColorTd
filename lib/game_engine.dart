@@ -30,7 +30,7 @@ class GameEngine extends BaseGame with TapDetector {
 
     towers.forEach((element) => add(element));
 //    add(FieldVectorComponent());
-//    add(BoardGridComponent());
+    add(BoardGridComponent());
 
     add(enemy);
   }

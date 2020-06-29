@@ -63,11 +63,19 @@ class EnemyMovementCoordinator {
     if (grid.contains(top)) returnSet.add(top);
     if (grid.contains(left)) returnSet.add(left);
     if (grid.contains(right)) returnSet.add(right);
-
-    if (grid.contains(topLeft)) returnSet.add(topLeft);
-    if (grid.contains(topRight)) returnSet.add(topRight);
-    if (grid.contains(bottomLeft)) returnSet.add(bottomLeft);
-    if (grid.contains(bottomRight)) returnSet.add(bottomRight);
+    
+    if (grid.contains(right) && grid.contains(bottom)) {
+      returnSet.add(bottomRight);
+    }
+    if (grid.contains(left) && grid.contains(bottom)) {
+      returnSet.add(bottomLeft);
+    }
+    if (grid.contains(left) && grid.contains(top)) {
+      returnSet.add(topLeft);
+    }
+    if (grid.contains(right) && grid.contains(top)) {
+      returnSet.add(topRight);
+    }
 
     return returnSet;
   }
