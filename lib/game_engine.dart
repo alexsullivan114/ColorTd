@@ -12,14 +12,12 @@ import 'package:colortd/tower/tower_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'enemy/enemy_component.dart';
 
-class GameEngine extends BaseGame with TapDetector {
-  static final t1 = TowerComponent()
-    ..gridRect = Rect.fromLTWH(4, 4, 5, 5);
-
-  final towers = [t1];
+class GameEngine extends BaseGame with TapDetector, PanDetector {
+  final List<TowerComponent> towers = [];
   final enemy = EnemyComponent();
   final coordinator = EnemyMovementCoordinator();
   double elapsedTimeSinceLastUpdate = 0;
@@ -28,8 +26,7 @@ class GameEngine extends BaseGame with TapDetector {
     add(EnemyCreatorComponent());
     add(EnemyDestinationComponent());
 
-    towers.forEach((element) => add(element));
-//    add(FieldVectorComponent());
+    add(FieldVectorComponent());
     add(BoardGridComponent());
 
     add(enemy);
@@ -56,6 +53,28 @@ class GameEngine extends BaseGame with TapDetector {
   void resize(Size size) {
     super.resize(size);
     GridHelpers.size = size;
+    Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
+    coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
+  }
+
+  @override
+  void onTapDown(TapDownDetails details) {
+    final point = GridHelpers.pointFromOffset(details.localPosition);
+    final tower = TowerComponent()
+      ..gridRect = Rect.fromLTWH(point.x.toDouble(), point.y.toDouble(), 1, 1);
+    towers.add(tower);
+    components.add(tower);
+    Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
+    coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
+  }
+
+  @override
+  void onPanUpdate(DragUpdateDetails details) {
+    final point = GridHelpers.pointFromOffset(details.localPosition);
+    final tower = TowerComponent()
+      ..gridRect = Rect.fromLTWH(point.x.toDouble(), point.y.toDouble(), 1, 1);
+    towers.add(tower);
+    components.add(tower);
     Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
     coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
   }

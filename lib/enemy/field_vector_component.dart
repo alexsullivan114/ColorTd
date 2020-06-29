@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 
 class FieldVectorComponent extends Component with HasGameRef<GameEngine> {
 
+
+
   @override
   void update(double t) {
 
@@ -22,8 +24,13 @@ class FieldVectorComponent extends Component with HasGameRef<GameEngine> {
       ..style = PaintingStyle.fill;
     final map = gameRef.coordinator.vectorField;
     for (GridPoint p in map.keys) {
-      final rect = GridHelpers.rect(p);
+      final rect = GridHelpers.fractionRect(p);
       c.drawRect(rect, paint);
     }
+  }
+
+  @override
+  int priority() {
+    return 1;
   }
 }
