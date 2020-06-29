@@ -15,6 +15,7 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   GridPoint previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
   double percentToNextPoint = 0;
+  int health = 100;
 
   set nextPoint(GridPoint point) {
     previousPoint = _nextPoint;
@@ -41,7 +42,7 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   }
 
   @override
-  void update(double dt) {
-
+  bool destroy() {
+    return health <= 0;
   }
 }

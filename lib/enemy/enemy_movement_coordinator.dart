@@ -80,14 +80,3 @@ class EnemyMovementCoordinator {
     return returnSet;
   }
 }
-
-enum Direction {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
-  TOP_RIGHT,
-  TOP_LEFT,
-  BOTTOM_LEFT,
-  BOTTOM_RIGHT
-}
