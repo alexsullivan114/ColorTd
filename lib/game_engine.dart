@@ -18,9 +18,10 @@ import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector, PanDetector {
   final List<TowerComponent> towers = [];
-  final enemy = EnemyComponent();
+  final List<EnemyComponent> enemies = [];
   final coordinator = EnemyMovementCoordinator();
-  double elapsedTimeSinceLastUpdate = 0;
+  double movementTimeCounter = 0;
+  double enemySpawnCounter = 0;
 
   GameEngine() {
     add(EnemyCreatorComponent());
@@ -28,24 +29,34 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
 
     add(FieldVectorComponent());
     add(BoardGridComponent());
-
-    add(enemy);
   }
 
 
   @override
   void update(double t) {
     super.update(t);
-    elapsedTimeSinceLastUpdate += t;
-    if (elapsedTimeSinceLastUpdate > TICK_RATE) {
-      final nextPoint = coordinator.vectorField[enemy.nextPoint];
-      if (nextPoint != null) {
-        enemy.nextPoint = nextPoint;
-      }
-      enemy.percentToNextPoint = 0;
-      elapsedTimeSinceLastUpdate = 0;
+    movementTimeCounter += t;
+    enemySpawnCounter +=t;
+    if (movementTimeCounter > TICK_RATE) {
+      enemies.forEach((enemy) {
+        final nextPoint = coordinator.vectorField[enemy.nextPoint];
+        if (nextPoint != null) {
+          enemy.nextPoint = nextPoint;
+        }
+        enemy.percentToNextPoint = 0;
+      });
+      movementTimeCounter = 0;
     } else {
-      enemy.percentToNextPoint = elapsedTimeSinceLastUpdate / TICK_RATE;
+      enemies.forEach((enemy){
+        enemy.percentToNextPoint = movementTimeCounter / TICK_RATE;
+      });
+    }
+
+    if (enemySpawnCounter > TICK_RATE * 3) {
+      final enemy = EnemyComponent();
+      add(enemy);
+      enemies.add(enemy);
+      enemySpawnCounter = 0;
     }
   }
 
