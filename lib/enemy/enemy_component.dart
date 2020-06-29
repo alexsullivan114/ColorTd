@@ -12,12 +12,12 @@ import '../constants.dart';
 
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
   List<GridPoint> points = [];
-  GridPoint _currentPoint = GridPoint(0, 0);
+  GridPoint previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
   double percentToNextPoint = 0;
 
   set nextPoint(GridPoint point) {
-    _currentPoint = _nextPoint;
+    previousPoint = _nextPoint;
     _nextPoint = point;
     points.add(point);
   }
@@ -31,7 +31,7 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 
-    final rect = GridHelpers.blendRect(_currentPoint, _nextPoint, percentToNextPoint);
+    final rect = GridHelpers.blendRect(previousPoint, _nextPoint, percentToNextPoint);
     c.drawRect(rect, paint);
 
 //    points.forEach((element) {

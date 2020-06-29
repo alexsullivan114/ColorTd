@@ -37,6 +37,12 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     super.update(t);
     movementTimeCounter += t;
     enemySpawnCounter +=t;
+    enemies.forEach((enemy) {
+      final nextPoint = coordinator.vectorField[enemy.nextPoint];
+      if (nextPoint == null) {
+        enemy.nextPoint = enemy.previousPoint;
+      }
+    });
     if (movementTimeCounter > TICK_RATE) {
       enemies.forEach((enemy) {
         final nextPoint = coordinator.vectorField[enemy.nextPoint];
