@@ -21,6 +21,7 @@ class GameEngine extends BaseGame with TapDetector {
   final towers = [t1];
   final enemy = EnemyComponent();
   final coordinator = EnemyMovementCoordinator();
+  double elapsedTimeSinceLastUpdate = 0;
 
   GameEngine() {
     add(EnemyCreatorComponent());
@@ -37,9 +38,13 @@ class GameEngine extends BaseGame with TapDetector {
   @override
   void update(double t) {
     super.update(t);
-    final nextPoint = coordinator.vectorField[enemy.nextPoint];
-    if (nextPoint != null) {
-      enemy.nextPoint = nextPoint;
+    elapsedTimeSinceLastUpdate += t;
+    if (elapsedTimeSinceLastUpdate > 0.8) {
+      final nextPoint = coordinator.vectorField[enemy.nextPoint];
+      if (nextPoint != null) {
+        enemy.nextPoint = nextPoint;
+      }
+      elapsedTimeSinceLastUpdate = 0;
     }
   }
 
