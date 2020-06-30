@@ -11,8 +11,6 @@ import 'package:colortd/grid/board_grid_component.dart';
 import 'package:colortd/tower/tower_component.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
-import 'package:flame/particles/circle_particle.dart';
-import 'package:flame/particles/moving_particle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,31 +31,6 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     add(BoardGridComponent());
   }
 
-  void adjustInvalidEnemyDestinations(List<EnemyComponent> enemies) {
-    enemies.forEach((enemy) {
-      final nextPoint = coordinator.vectorField[enemy.nextPoint];
-      if (nextPoint == null) {
-        enemy.nextPoint = enemy.previousPoint;
-      }
-    });
-  }
-
-  void advanceEnemiesPosition(List<EnemyComponent> enemies) {
-    enemies.forEach((enemy) {
-      final nextPoint = coordinator.vectorField[enemy.nextPoint];
-      if (nextPoint != null) {
-        enemy.nextPoint = nextPoint;
-      }
-      enemy.percentToNextPoint = 0;
-    });
-  }
-
-  void inchEnemiesAlong(List<EnemyComponent> enemies) {
-    enemies.forEach((enemy){
-      enemy.percentToNextPoint = movementTimeCounter / TICK_RATE;
-    });
-  }
-
   @override
   void update(double t) {
     super.update(t);
@@ -65,10 +38,7 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     enemySpawnCounter +=t;
     enemies.removeWhere((enemy) => enemy.health <= 0);
 
-    adjustInvalidEnemyDestinations(enemies);
-
     if (movementTimeCounter > TICK_RATE) {
-      advanceEnemiesPosition(enemies);
       towers.forEach((element) {
         final particle = element.fireAt(enemies)?.asComponent();
         if (particle != null) {
@@ -76,8 +46,6 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
         }
       });
       movementTimeCounter = 0;
-    } else {
-      inchEnemiesAlong(enemies);
     }
 
     if (enemySpawnCounter > TICK_RATE * 3) {

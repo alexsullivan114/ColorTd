@@ -11,16 +11,15 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
-  List<GridPoint> points = [];
   GridPoint previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
+  double elapsedTimeSinceMove = 0;
   double percentToNextPoint = 0;
   int health = 100;
 
   set nextPoint(GridPoint point) {
     previousPoint = _nextPoint;
     _nextPoint = point;
-    points.add(point);
   }
 
   GridPoint get nextPoint => _nextPoint;
@@ -34,11 +33,30 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
 
     final rect = GridHelpers.blendRect(previousPoint, _nextPoint, percentToNextPoint);
     c.drawRect(rect, paint);
+  }
 
-//    points.forEach((element) {
-//      final rect = GridHelpers.rect(element);
-//      c.drawRect(rect, paint);
-//    });
+  void _correctPotentialInvalidDestination() {
+    final potentialNextPoint = gameRef.coordinator.vectorField[nextPoint];
+    if (potentialNextPoint == null) {
+      nextPoint = previousPoint;
+    }
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    _correctPotentialInvalidDestination();
+    elapsedTimeSinceMove += dt;
+    if (elapsedTimeSinceMove > TICK_RATE) {
+      final potentialNextPoint = gameRef.coordinator.vectorField[nextPoint];
+      if (potentialNextPoint != null) {
+        nextPoint = potentialNextPoint;
+      }
+      elapsedTimeSinceMove = 0;
+      percentToNextPoint = 0;
+    } else {
+      percentToNextPoint = elapsedTimeSinceMove / TICK_RATE;
+    }
   }
 
   @override
