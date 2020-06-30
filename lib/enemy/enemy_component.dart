@@ -66,7 +66,7 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
 
   @override
   bool destroy() {
-    return health <= 0;
+    return health <= 0 || previousPoint == GridHelpers.endPoint;
   }
 
   void attack(int damage) {
