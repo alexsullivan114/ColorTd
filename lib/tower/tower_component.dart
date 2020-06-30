@@ -2,15 +2,19 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:colortd/enemy/enemy_component.dart';
+import 'package:colortd/game_engine.dart';
 import 'package:colortd/grid/GridHelper.dart';
 import 'package:flame/components/component.dart';
+import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/particle.dart';
 import 'package:flame/particles/circle_particle.dart';
 import 'package:flame/particles/moving_particle.dart';
 import 'package:flutter/material.dart';
 
-class TowerComponent extends PositionComponent {
+class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
 
+  static const double ATTACK_RATE = 5.0;
+  double _attackTimeCounter = 0;
   Rect gridRect = Rect.fromLTWH(0, 0, 0, 0);
 
   @override
@@ -23,8 +27,22 @@ class TowerComponent extends PositionComponent {
     c.drawRect(GridHelpers.rectFromGridRect(gridRect), paint);
   }
 
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    _attackTimeCounter += dt;
+    if (_attackTimeCounter >= ATTACK_RATE) {
+      final particle = fireAt(gameRef?.enemies ?? []);
+      if (particle != null) {
+        gameRef.add(particle.asComponent());
+      }
+      _attackTimeCounter = 0;
+    }
+  }
+
   Particle fireAt(List<EnemyComponent> enemies) {
-    final enemy = closestEnemy(enemies);
+    final enemy = _closestEnemy(enemies);
     if (enemy != null) {
       enemy.attack(1);
       return _projectileParticle(enemy);
@@ -47,7 +65,7 @@ class TowerComponent extends PositionComponent {
     return particle;
   }
 
-  EnemyComponent closestEnemy(List<EnemyComponent> enemies) {
+  EnemyComponent _closestEnemy(List<EnemyComponent> enemies) {
     EnemyComponent closestEnemy;
     double closestDistance = 1000000000;
     enemies.forEach((enemy) {

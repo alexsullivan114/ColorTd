@@ -20,7 +20,6 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
   final List<TowerComponent> towers = [];
   final List<EnemyComponent> enemies = [];
   final coordinator = EnemyMovementCoordinator();
-  double movementTimeCounter = 0;
   double enemySpawnCounter = 0;
 
   GameEngine() {
@@ -34,19 +33,8 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
   @override
   void update(double t) {
     super.update(t);
-    movementTimeCounter += t;
     enemySpawnCounter +=t;
     enemies.removeWhere((enemy) => enemy.health <= 0);
-
-    if (movementTimeCounter > TICK_RATE) {
-      towers.forEach((element) {
-        final particle = element.fireAt(enemies)?.asComponent();
-        if (particle != null) {
-          add(particle);
-        }
-      });
-      movementTimeCounter = 0;
-    }
 
     if (enemySpawnCounter > TICK_RATE * 3) {
       final enemy = EnemyComponent();
@@ -78,7 +66,7 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
       final tower = TowerComponent()
         ..gridRect = gridRect;
       towers.add(tower);
-      components.add(tower);
+      add(tower);
       Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
       coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
     }
