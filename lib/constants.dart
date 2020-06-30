@@ -1,1 +1,1 @@
-const TICK_RATE = 0.9;
+const TICK_RATE = 0.4;

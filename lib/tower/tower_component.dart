@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
 
   static const double ATTACK_RATE = 1.0;
+  static const int RANGE = 7;
   double _attackTimeCounter = 0;
   Rect gridRect = Rect.fromLTWH(0, 0, 0, 0);
 
@@ -42,7 +43,7 @@ class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
   }
 
   Particle fireAt(List<EnemyComponent> enemies) {
-    final enemy = _closestEnemy(enemies);
+    final enemy = _closestEnemyInRange(enemies);
     if (enemy != null) {
       enemy.attack(1);
       return _projectileParticle(enemy);
@@ -65,14 +66,14 @@ class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
     return particle;
   }
 
-  EnemyComponent _closestEnemy(List<EnemyComponent> enemies) {
+  EnemyComponent _closestEnemyInRange(List<EnemyComponent> enemies) {
     EnemyComponent closestEnemy;
     double closestDistance = 1000000000;
     enemies.forEach((enemy) {
       final x = pow(enemy.nextPoint.x - gridRect.left, 2);
       final y = pow(enemy.nextPoint.y - gridRect.top, 2);
       final distance = sqrt(x + y);
-      if (distance < closestDistance) {
+      if (distance < closestDistance && distance <= RANGE) {
         closestEnemy = enemy;
         closestDistance = distance;
       }
