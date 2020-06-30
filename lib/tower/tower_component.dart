@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
 
-  static const double ATTACK_RATE = 5.0;
+  static const double ATTACK_RATE = 1.0;
   double _attackTimeCounter = 0;
   Rect gridRect = Rect.fromLTWH(0, 0, 0, 0);
 

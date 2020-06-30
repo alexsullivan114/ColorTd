@@ -38,7 +38,12 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   void _correctPotentialInvalidDestination() {
     final potentialNextPoint = gameRef.coordinator.vectorField[nextPoint];
     if (potentialNextPoint == null) {
-      nextPoint = previousPoint;
+      final potentialNextPointAfterPreviousPoint = gameRef.coordinator.vectorField[previousPoint];
+      if (potentialNextPointAfterPreviousPoint != null) {
+        nextPoint = previousPoint;
+      } else {
+        gameRef.trapped();
+      }
     }
   }
 

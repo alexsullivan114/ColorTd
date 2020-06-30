@@ -53,12 +53,12 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
   }
 
   @override
-  void onTapDown(TapDownDetails details) => maybeAddTower(details.localPosition);
+  void onTapDown(TapDownDetails details) => _maybeAddTower(details.localPosition);
 
   @override
-  void onPanUpdate(DragUpdateDetails details) => maybeAddTower(details.localPosition);
+  void onPanUpdate(DragUpdateDetails details) => _maybeAddTower(details.localPosition);
 
-  void maybeAddTower(Offset offset) {
+  void _maybeAddTower(Offset offset) {
     final point = GridHelpers.pointFromOffset(offset);
     final gridRect = Rect.fromLTWH(point.x.toDouble(), point.y.toDouble(), 1, 1);
     final towerRects = towers.map((e) => e.gridRect);
@@ -70,5 +70,14 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
       Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
       coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
     }
+  }
+
+  void trapped() {
+    towers.forEach((tower) {
+      components.remove(tower);
+    });
+    towers.clear();
+    Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
+    coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
   }
 }
