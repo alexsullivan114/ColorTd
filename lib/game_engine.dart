@@ -47,6 +47,7 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
   @override
   void resize(Size size) {
     super.resize(size);
+    GridHelpers.gridSize = min((size.width / GridHelpers.width), (size.height / GridHelpers.height));
     GridHelpers.size = size;
     Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
     coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);

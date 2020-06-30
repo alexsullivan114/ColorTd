@@ -10,20 +10,21 @@ class GridPoint extends Point<int> with GridAware{
 }
 
 class GridHelpers {
+  static var gridSize = 0.0;
   static Size size = Size(0, 0);
 
-  static int get width => (size.width / GRID_SIZE).floor();
-  static int get height => (size.height / GRID_SIZE).floor();
+  static int get width => 20;
+  static int get height => 30;
   static GridPoint get endPoint => GridPoint(width - 1, height - 1);
 
   static Rect rect(GridPoint point) {
     return Rect.fromLTWH(
-        point.x * GRID_SIZE, point.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+        point.x * gridSize, point.y * gridSize, gridSize, gridSize);
   }
 
   static Rect fractionRect(GridPoint point) {
     return Rect.fromLTWH(
-        point.x * GRID_SIZE, point.y * GRID_SIZE, GRID_SIZE / 2, GRID_SIZE / 2);
+        point.x * gridSize, point.y * gridSize, gridSize / 2, gridSize / 2);
   }
 
   static Rect blendRect(GridPoint oldPoint, GridPoint newPoint, double percent) {
@@ -35,22 +36,22 @@ class GridHelpers {
   }
 
   static Rect rectFromGridRect(Rect rect) {
-    final x = rect.left * GRID_SIZE;
-    final y = rect.top * GRID_SIZE;
-    final width = rect.width * GRID_SIZE;
-    final height = rect.height * GRID_SIZE;
+    final x = rect.left * gridSize;
+    final y = rect.top * gridSize;
+    final width = rect.width * gridSize;
+    final height = rect.height * gridSize;
     return Rect.fromLTWH(x, y, width, height);
   }
 
   static GridPoint pointFromOffset(Offset offset) {
-    final x = (offset.dx / GRID_SIZE).floor();
-    final y = (offset.dy / GRID_SIZE).floor();
+    final x = (offset.dx / gridSize).floor();
+    final y = (offset.dy / gridSize).floor();
     return GridPoint(x, y);
   }
 
   static Offset offsetFromGridPoint(GridPoint point) {
-    final x = point.x * GRID_SIZE;
-    final y = point.y * GRID_SIZE;
+    final x = point.x * gridSize;
+    final y = point.y * gridSize;
     return Offset(x, y);
   }
 }

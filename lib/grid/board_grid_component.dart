@@ -21,7 +21,7 @@ class BoardGridComponent extends PositionComponent with Resizable{
       ..strokeCap = StrokeCap.square;
     for (int i = 0; i < horizontalGridCount; i++) {
       for (int j = 0; j < verticalGridCount; j++) {
-        final gridSize = GRID_SIZE.toDouble();
+        final gridSize = GridHelpers.gridSize.toDouble();
         final gridCell =
         Rect.fromLTWH(i * gridSize, j * gridSize, gridSize, gridSize);
         c.drawRect(gridCell, paint);

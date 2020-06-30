@@ -56,7 +56,7 @@ class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
       ..color = Colors.teal;
 
     final particle = MovingParticle(
-      child: CircleParticle(paint: paint),
+      child: CircleParticle(paint: paint, radius: GridHelpers.gridSize / 3),
       from: GridHelpers.offsetFromGridPoint(GridPoint(gridRect.left.toInt(), gridRect.top.toInt())),
       to: GridHelpers.offsetFromGridPoint(GridPoint(firingAt.nextPoint.x + 1, firingAt.nextPoint.y + 1)),
       lifespan: 1,
