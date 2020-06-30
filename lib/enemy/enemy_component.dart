@@ -45,4 +45,8 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   bool destroy() {
     return health <= 0;
   }
+
+  void attack(int damage) {
+    health -= damage;
+  }
 }

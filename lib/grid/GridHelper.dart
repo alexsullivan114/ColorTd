@@ -47,4 +47,10 @@ class GridHelpers {
     final y = (offset.dy / GRID_SIZE).floor();
     return GridPoint(x, y);
   }
+
+  static Offset offsetFromGridPoint(GridPoint point) {
+    final x = point.x * GRID_SIZE;
+    final y = point.y * GRID_SIZE;
+    return Offset(x, y);
+  }
 }

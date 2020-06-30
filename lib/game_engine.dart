@@ -11,7 +11,10 @@ import 'package:colortd/grid/board_grid_component.dart';
 import 'package:colortd/tower/tower_component.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flame/particles/circle_particle.dart';
+import 'package:flame/particles/moving_particle.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'enemy/enemy_component.dart';
 
@@ -26,7 +29,7 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     add(EnemyCreatorComponent());
     add(EnemyDestinationComponent());
 
-    add(FieldVectorComponent());
+//    add(FieldVectorComponent());
     add(BoardGridComponent());
   }
 
@@ -55,28 +58,23 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     });
   }
 
-  void attackEnemies(List<EnemyComponent> enemies, List<TowerComponent> towers) {
-    towers.forEach((tower) {
-       final enemy = closestEnemy(tower);
-       if (enemy != null) {
-         enemy.health -= 1;
-         if (enemy.health <= 0) {
-           enemies.remove(enemy);
-         }
-       }
-    });
-  }
-
   @override
   void update(double t) {
     super.update(t);
     movementTimeCounter += t;
     enemySpawnCounter +=t;
+    enemies.removeWhere((enemy) => enemy.health <= 0);
+
     adjustInvalidEnemyDestinations(enemies);
 
     if (movementTimeCounter > TICK_RATE) {
       advanceEnemiesPosition(enemies);
-      attackEnemies(enemies, towers);
+      towers.forEach((element) {
+        final particle = element.fireAt(enemies)?.asComponent();
+        if (particle != null) {
+          add(particle);
+        }
+      });
       movementTimeCounter = 0;
     } else {
       inchEnemiesAlong(enemies);
@@ -88,21 +86,6 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
       enemies.add(enemy);
       enemySpawnCounter = 0;
     }
-  }
-
-  EnemyComponent closestEnemy(TowerComponent tower) {
-    EnemyComponent closestEnemy;
-    double closestDistance = 1000000000;
-    enemies.forEach((enemy) {
-      final x = pow(enemy.nextPoint.x - tower.gridRect.left, 2);
-      final y = pow(enemy.nextPoint.y - tower.gridRect.top, 2);
-      final distance = sqrt(x + y);
-      if (distance < closestDistance) {
-        closestEnemy = enemy;
-        closestDistance = distance;
-      }
-    });
-    return closestEnemy;
   }
 
   @override
