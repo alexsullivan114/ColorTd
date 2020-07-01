@@ -103,4 +103,9 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   void attack(double damage) {
     health -= damage;
   }
+
+  @override
+  int priority() {
+    return 100;
+  }
 }
