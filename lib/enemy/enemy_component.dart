@@ -11,11 +11,12 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
+  static const double maxHealth = 100;
   GridPoint _previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
   double elapsedTimeSinceMove = 0;
   double percentToNextPoint = 0;
-  double health = 100;
+  double health = maxHealth;
 
   Rect get realRect => GridHelpers.blendRect(_previousPoint, _nextPoint, percentToNextPoint);
 
@@ -28,12 +29,41 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
 
   @override
   void render(Canvas c) {
-    final paint = Paint()
+    renderEnemy(c);
+    renderHealth(c);
+  }
+
+  void renderHealth(Canvas c) {
+    final healthOutlinePaint = Paint()
+      ..color = Colors.green
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    final left = realRect.left;
+    final top = realRect.top - 20;
+    final healthRect = Rect.fromLTWH(left, top, realRect.width, 15);
+    c.drawRect(healthRect, healthOutlinePaint);
+
+    final healthFillPaint = Paint()
+    ..color = Colors.red
+    ..strokeWidth = 2
+    ..style = PaintingStyle.fill;
+    final fillLeft = left + healthOutlinePaint.strokeWidth;
+    final fillTop = top + healthOutlinePaint.strokeWidth;
+    final fullWidth = realRect.width - healthOutlinePaint.strokeWidth;
+    final fillHeight = 15 - healthOutlinePaint.strokeWidth;
+    final width = fullWidth * (health / maxHealth);
+    final fillRect = Rect.fromLTWH(fillLeft, fillTop, width, fillHeight);
+    c.drawRect(fillRect, healthFillPaint);
+  }
+
+  void renderEnemy(Canvas c) {
+    final enemyPaint = Paint()
       ..color = Colors.green
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 
-    c.drawRect(realRect, paint);
+    c.drawRect(realRect, enemyPaint);
   }
 
   void _correctPotentialInvalidDestination() {
