@@ -14,15 +14,17 @@ import 'package:flame/gestures.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'GameCallback.dart';
 import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector, PanDetector {
+  final GameCallback _callback;
   final List<TowerComponent> towers = [];
   final List<EnemyComponent> enemies = [];
   final coordinator = EnemyMovementCoordinator();
   double enemySpawnCounter = 0;
 
-  GameEngine() {
+  GameEngine(this._callback) {
     add(EnemyCreatorComponent());
     add(EnemyDestinationComponent());
 
@@ -80,5 +82,13 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     towers.clear();
     Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
     coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
+  }
+
+  void enemyDestroyed() {
+    _callback.onEnemyDestroyed();
+  }
+
+  void enemyReachedDestination() {
+    _callback.onEnemyReachedDestination();
   }
 }
