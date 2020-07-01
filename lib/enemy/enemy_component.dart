@@ -11,14 +11,16 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
-  GridPoint previousPoint = GridPoint(0, 0);
+  GridPoint _previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
   double elapsedTimeSinceMove = 0;
   double percentToNextPoint = 0;
-  int health = 100;
+  double health = 100;
+
+  Rect get realRect => GridHelpers.blendRect(_previousPoint, _nextPoint, percentToNextPoint);
 
   set nextPoint(GridPoint point) {
-    previousPoint = _nextPoint;
+    _previousPoint = _nextPoint;
     _nextPoint = point;
   }
 
@@ -31,16 +33,15 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 
-    final rect = GridHelpers.blendRect(previousPoint, _nextPoint, percentToNextPoint);
-    c.drawRect(rect, paint);
+    c.drawRect(realRect, paint);
   }
 
   void _correctPotentialInvalidDestination() {
     final potentialNextPoint = gameRef.coordinator.vectorField[nextPoint];
     if (potentialNextPoint == null) {
-      final potentialNextPointAfterPreviousPoint = gameRef.coordinator.vectorField[previousPoint];
+      final potentialNextPointAfterPreviousPoint = gameRef.coordinator.vectorField[_previousPoint];
       if (potentialNextPointAfterPreviousPoint != null) {
-        nextPoint = previousPoint;
+        nextPoint = _previousPoint;
       } else {
         gameRef.trapped();
       }
@@ -66,10 +67,10 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
 
   @override
   bool destroy() {
-    return health <= 0 || previousPoint == GridHelpers.endPoint;
+    return health <= 0 || _previousPoint == GridHelpers.endPoint;
   }
 
-  void attack(int damage) {
+  void attack(double damage) {
     health -= damage;
   }
 }

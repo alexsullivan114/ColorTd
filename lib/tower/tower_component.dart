@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:colortd/enemy/enemy_component.dart';
 import 'package:colortd/game_engine.dart';
 import 'package:colortd/grid/GridHelper.dart';
+import 'package:colortd/tower/projectile_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/particle.dart';
@@ -13,7 +14,7 @@ import 'package:flutter/material.dart';
 
 class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
 
-  static const double ATTACK_RATE = 1.0;
+  static const double ATTACK_RATE = 0.6;
   static const int RANGE = 7;
   double _attackTimeCounter = 0;
   Rect gridRect = Rect.fromLTWH(0, 0, 0, 0);
@@ -34,36 +35,25 @@ class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
     super.update(dt);
     _attackTimeCounter += dt;
     if (_attackTimeCounter >= ATTACK_RATE) {
-      final particle = fireAt(gameRef?.enemies ?? []);
-      if (particle != null) {
-        gameRef.add(particle.asComponent());
+      final projectile = fireAt(gameRef?.enemies ?? []);
+      if (projectile != null) {
+        gameRef.add(projectile);
       }
       _attackTimeCounter = 0;
     }
   }
 
-  Particle fireAt(List<EnemyComponent> enemies) {
+  ProjectileComponent fireAt(List<EnemyComponent> enemies) {
     final enemy = _closestEnemyInRange(enemies);
     if (enemy != null) {
-      enemy.attack(1);
-      return _projectileParticle(enemy);
+      return _projectileComponent(enemy);
     } else {
       return null;
     }
   }
 
-  Particle _projectileParticle(EnemyComponent firingAt) {
-    final paint = Paint()
-      ..color = Colors.teal;
-
-    final particle = MovingParticle(
-      child: CircleParticle(paint: paint, radius: GridHelpers.gridSize / 3),
-      from: GridHelpers.offsetFromGridPoint(GridPoint(gridRect.left.toInt(), gridRect.top.toInt())),
-      to: GridHelpers.offsetFromGridPoint(GridPoint(firingAt.nextPoint.x + 1, firingAt.nextPoint.y + 1)),
-      lifespan: 1,
-    );
-
-    return particle;
+  ProjectileComponent _projectileComponent(EnemyComponent firingAt) {
+    return ProjectileComponent(firingAt, GridHelpers.rectFromGridRect(gridRect).center, 1);
   }
 
   EnemyComponent _closestEnemyInRange(List<EnemyComponent> enemies) {

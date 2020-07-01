@@ -5,7 +5,7 @@ import '../constants.dart';
 
 mixin GridAware {}
 
-class GridPoint extends Point<int> with GridAware{
+class GridPoint extends Point with GridAware{
   GridPoint(num x, num y) : super(x, y);
 }
 
@@ -53,5 +53,9 @@ class GridHelpers {
     final x = point.x * gridSize;
     final y = point.y * gridSize;
     return Offset(x, y);
+  }
+
+  static double adjustedMagnitude(double original) {
+    return original * gridSize;
   }
 }
