@@ -1,17 +1,23 @@
 import 'dart:async';
 
-import 'package:colortd/GameCallback.dart';
 import 'package:rxdart/rxdart.dart';
 
-class Game extends GameCallback {
-  final BehaviorSubject<int> goldStream = BehaviorSubject.seeded(10);
-  @override
+class ColorTdGame {
+  // ignore: close_sinks
+  final BehaviorSubject<int> _goldSubject = BehaviorSubject.seeded(10);
+
+  Stream<int> get goldStream => _goldSubject.stream;
+  int get gold => _goldSubject.value;
+
   void onEnemyDestroyed() {
-    goldStream.value += 1;
+    _goldSubject.value += 1;
   }
 
-  @override
   void onEnemyReachedDestination() {
-    goldStream.value -= 1;
+
+  }
+
+  void onTowerPurchased() {
+    _goldSubject.value -= 1;
   }
 }

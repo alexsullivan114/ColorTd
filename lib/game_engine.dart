@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:colortd/Game.dart';
 import 'package:colortd/constants.dart';
 import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/enemy/enemy_creator_component.dart';
@@ -9,22 +10,21 @@ import 'package:colortd/enemy/enemy_movement_coordinator.dart';
 import 'package:colortd/grid/field_vector_component.dart';
 import 'package:colortd/grid/board_grid_component.dart';
 import 'package:colortd/tower/tower_component.dart';
-import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'GameCallback.dart';
 import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector, PanDetector {
-  final GameCallback _callback;
+  final ColorTdGame _game;
   final List<TowerComponent> towers = [];
   final List<EnemyComponent> enemies = [];
   final coordinator = EnemyMovementCoordinator();
   double enemySpawnCounter = 0;
 
-  GameEngine(this._callback) {
+  GameEngine(this._game) {
     add(EnemyCreatorComponent());
     add(EnemyDestinationComponent());
 
@@ -62,16 +62,17 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
   void onPanUpdate(DragUpdateDetails details) => _maybeAddTower(details.localPosition);
 
   void _maybeAddTower(Offset offset) {
-    final point = GridHelpers.pointFromOffset(offset);
+    final point = GridHelpers.roundedPointFromOffset(offset);
     final gridRect = Rect.fromLTWH(point.x.toDouble(), point.y.toDouble(), 1, 1);
     final towerRects = towers.map((e) => e.gridRect);
-    if (!towerRects.contains(gridRect)) {
+    if (!towerRects.contains(gridRect) && _game.gold > 0) {
       final tower = TowerComponent()
         ..gridRect = gridRect;
       towers.add(tower);
       add(tower);
       Size gridSize = Size(GridHelpers.width.toDouble(), GridHelpers.height.toDouble());
       coordinator.calculateVectorField(towers, gridSize, GridHelpers.endPoint);
+      _game.onTowerPurchased();
     }
   }
 
@@ -85,10 +86,10 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
   }
 
   void enemyDestroyed() {
-    _callback.onEnemyDestroyed();
+    _game.onEnemyDestroyed();
   }
 
   void enemyReachedDestination() {
-    _callback.onEnemyReachedDestination();
+    _game.onEnemyReachedDestination();
   }
 }

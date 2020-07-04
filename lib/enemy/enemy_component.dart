@@ -11,14 +11,18 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
-  static const double maxHealth = 100;
+  static const double maxHealth = 10;
+  static const int _speed = 4;
   GridPoint _previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
-  double elapsedTimeSinceMove = 0;
-  double percentToNextPoint = 0;
+  GridPoint _currentLocation = GridPoint(0, 0);
   double health = maxHealth;
 
-  Rect get realRect => GridHelpers.blendRect(_previousPoint, _nextPoint, percentToNextPoint);
+  Rect get realRect {
+    final gridRect = Rect.fromLTWH(
+        _currentLocation.x.toDouble(), _currentLocation.y.toDouble(), 1, 1);
+    return GridHelpers.rectFromGridRect(gridRect);
+  }
 
   set nextPoint(GridPoint point) {
     _previousPoint = _nextPoint;
@@ -82,22 +86,29 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   void update(double dt) {
     super.update(dt);
     _correctPotentialInvalidDestination();
-    elapsedTimeSinceMove += dt;
-    if (elapsedTimeSinceMove > TICK_RATE) {
+    final distance = GridHelpers.adjustedMagnitude(dt * _speed);
+    final nextPointOffset = GridHelpers.offsetFromGridPoint(_nextPoint);
+    final currentPointOffset = GridHelpers.offsetFromGridPoint(_currentLocation);
+    final adjustedOffset = nextPointOffset - currentPointOffset;
+    final movementX = min(adjustedOffset.dx.abs(), distance);
+    final movementY = min(adjustedOffset.dy.abs(), distance);
+    final modifierX = adjustedOffset.dx > 0 ? 1 : -1;
+    final modifierY = adjustedOffset.dy > 0 ? 1 : -1;
+    double newX = currentPointOffset.dx + (modifierX * movementX);
+    double newY = currentPointOffset.dy + (modifierY * movementY);
+
+    _currentLocation = GridHelpers.pointFromOffset(Offset(newX, newY));
+    if (GridHelpers.withinSpittingDistance(_currentLocation, _nextPoint)) {
       final potentialNextPoint = gameRef.coordinator.vectorField[nextPoint];
       if (potentialNextPoint != null) {
         nextPoint = potentialNextPoint;
       }
-      elapsedTimeSinceMove = 0;
-      percentToNextPoint = 0;
-    } else {
-      percentToNextPoint = elapsedTimeSinceMove / TICK_RATE;
     }
   }
 
   @override
   bool destroy() {
-    return health <= 0 || _previousPoint == GridHelpers.endPoint;
+    return health <= 0 || GridHelpers.withinSpittingDistance(_currentLocation, GridHelpers.endPoint);
   }
 
 
@@ -105,7 +116,7 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   void onDestroy() {
     if (health <= 0) {
       gameRef.enemyDestroyed();
-    } else if (_previousPoint == GridHelpers.endPoint) {
+    } else if (GridHelpers.withinSpittingDistance(_currentLocation, GridHelpers.endPoint)) {
       gameRef.enemyReachedDestination();
     }
   }

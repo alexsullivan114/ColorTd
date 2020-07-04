@@ -1,4 +1,3 @@
-import 'package:colortd/GameCallback.dart';
 import 'package:colortd/builder_pane.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ class GameWidget extends StatefulWidget {
 
 class _GameWidgetState extends State<GameWidget> {
 
-  final _game = Game();
+  final _game = ColorTdGame();
   GameEngine _gameEngine;
 
   _GameWidgetState() {

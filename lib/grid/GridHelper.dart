@@ -44,9 +44,14 @@ class GridHelpers {
   }
 
   static GridPoint pointFromOffset(Offset offset) {
-    final x = (offset.dx / gridSize).floor();
-    final y = (offset.dy / gridSize).floor();
+    final x = (offset.dx / gridSize);
+    final y = (offset.dy / gridSize);
     return GridPoint(x, y);
+  }
+
+  static GridPoint roundedPointFromOffset(Offset offset) {
+    final point = pointFromOffset(offset);
+    return GridPoint(point.x.floor(), point.y.floor());
   }
 
   static Offset offsetFromGridPoint(GridPoint point) {
@@ -57,5 +62,11 @@ class GridHelpers {
 
   static double adjustedMagnitude(double original) {
     return original * gridSize;
+  }
+
+  static bool withinSpittingDistance(GridPoint first, GridPoint second) {
+    final spittingDistance = 0.0001;
+    return (first.x - second.x).abs() <= spittingDistance &&
+        (first.y - second.y).abs() <= spittingDistance;
   }
 }
