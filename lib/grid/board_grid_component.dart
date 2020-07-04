@@ -6,8 +6,6 @@ import 'package:flame/components/mixins/resizable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class BoardGridComponent extends PositionComponent with Resizable{
 
   @override

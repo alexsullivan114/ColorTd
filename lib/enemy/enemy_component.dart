@@ -8,11 +8,9 @@ import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
   static const double maxHealth = 10;
-  static const int _speed = 4;
+  static const double _speed = 4;
   GridPoint _previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
   GridPoint _currentLocation = GridPoint(0, 0);

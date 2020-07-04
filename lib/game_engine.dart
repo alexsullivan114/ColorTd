@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:colortd/Game.dart';
-import 'package:colortd/constants.dart';
 import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/enemy/enemy_creator_component.dart';
 import 'package:colortd/enemy/enemy_destination_component.dart';
@@ -18,11 +17,12 @@ import 'package:flutter/material.dart';
 import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector, PanDetector {
+  static const int SPAWN_INTERVAL = 1;
+  double enemySpawnCounter = 0;
   final ColorTdGame _game;
   final List<TowerComponent> towers = [];
   final List<EnemyComponent> enemies = [];
   final coordinator = EnemyMovementCoordinator();
-  double enemySpawnCounter = 0;
 
   GameEngine(this._game) {
     add(EnemyCreatorComponent());
@@ -38,7 +38,7 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     enemySpawnCounter +=t;
     enemies.removeWhere((enemy) => enemy.health <= 0);
 
-    if (enemySpawnCounter > TICK_RATE * 3) {
+    if (enemySpawnCounter > SPAWN_INTERVAL) {
       final enemy = EnemyComponent();
       add(enemy);
       enemies.add(enemy);

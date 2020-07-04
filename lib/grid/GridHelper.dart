@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import '../constants.dart';
-
 mixin GridAware {}
 
 class GridPoint extends Point with GridAware{
