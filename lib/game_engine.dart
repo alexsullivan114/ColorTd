@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'enemy/enemy_component.dart';
 
 class GameEngine extends BaseGame with TapDetector, PanDetector {
-  static const int SPAWN_INTERVAL = 1;
   double enemySpawnCounter = 0;
   final ColorTdGame _game;
   final List<TowerComponent> towers = [];
@@ -38,8 +37,8 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     enemySpawnCounter +=t;
     enemies.removeWhere((enemy) => enemy.health <= 0);
 
-    if (enemySpawnCounter > SPAWN_INTERVAL) {
-      final enemy = EnemyComponent();
+    if (enemySpawnCounter > _game.spawnTime && !_game.levelFinished) {
+      final enemy = _game.createEnemy();
       add(enemy);
       enemies.add(enemy);
       enemySpawnCounter = 0;

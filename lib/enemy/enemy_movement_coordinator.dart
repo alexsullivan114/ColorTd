@@ -5,8 +5,6 @@ import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/tower/tower_component.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
-
 class EnemyMovementCoordinator {
   Map<GridPoint, GridPoint> vectorField = {};
 

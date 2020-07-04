@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:colortd/grid/GridHelper.dart';
-import 'package:colortd/constants.dart';
 import 'package:flame/components/component.dart';
 import 'package:flutter/material.dart';
 

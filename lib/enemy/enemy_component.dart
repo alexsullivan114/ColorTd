@@ -9,12 +9,12 @@ import 'package:flame/components/mixins/resizable.dart';
 import 'package:flutter/material.dart';
 
 class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEngine> {
-  static const double maxHealth = 10;
-  static const double _speed = 4;
+  final double maxHealth;
+  final double speed;
   GridPoint _previousPoint = GridPoint(0, 0);
   GridPoint _nextPoint = GridPoint(0, 0);
   GridPoint _currentLocation = GridPoint(0, 0);
-  double health = maxHealth;
+  double health;
 
   Rect get realRect {
     final gridRect = Rect.fromLTWH(
@@ -28,6 +28,10 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   }
 
   GridPoint get nextPoint => _nextPoint;
+  
+  EnemyComponent({this.maxHealth, this.speed}) {
+    this.health = this.maxHealth; 
+  }
 
   @override
   void render(Canvas c) {
@@ -84,7 +88,7 @@ class EnemyComponent extends PositionComponent with Resizable, HasGameRef<GameEn
   void update(double dt) {
     super.update(dt);
     _correctPotentialInvalidDestination();
-    final distance = GridHelpers.adjustedMagnitude(dt * _speed);
+    final distance = GridHelpers.adjustedMagnitude(dt * speed);
     final nextPointOffset = GridHelpers.offsetFromGridPoint(_nextPoint);
     final currentPointOffset = GridHelpers.offsetFromGridPoint(_currentLocation);
     final adjustedOffset = nextPointOffset - currentPointOffset;
