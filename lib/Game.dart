@@ -17,10 +17,15 @@ class ColorTdGame {
 
   bool get levelFinished => _currentLevel.remainingEnemies <= 0;
 
-  int get spawnTime => _currentLevel.spawnTime;
+  double get spawnTime => _currentLevel.spawnTime;
 
   EnemyComponent createEnemy() {
     _currentLevel.remainingEnemies -= 1;
+    if (levelFinished) {
+      Future.delayed(Duration(seconds: 5), (){
+        _currentLevel = _currentLevel.nextLevel;
+      });
+    }
     return _currentLevel.enemyCreator();
   }
 

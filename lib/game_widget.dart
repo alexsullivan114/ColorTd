@@ -2,7 +2,7 @@ import 'package:colortd/builder_pane.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'Game.dart';
+import 'game.dart';
 import 'game_engine.dart';
 
 class GameWidget extends StatefulWidget {
