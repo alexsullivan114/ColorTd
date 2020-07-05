@@ -3,5 +3,6 @@ import 'package:flutter/material.dart';
 const colors = [
  Colors.red,
  Colors.blue,
- Colors.yellow
+ Colors.green,
+ Colors.black
 ];
