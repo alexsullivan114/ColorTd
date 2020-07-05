@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:colortd/game.dart';
+import 'package:colortd/color_td_game.dart';
 import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/enemy/enemy_creator_component.dart';
 import 'package:colortd/enemy/enemy_destination_component.dart';

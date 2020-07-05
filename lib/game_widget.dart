@@ -2,7 +2,7 @@ import 'package:colortd/builder_pane.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'game.dart';
+import 'color_td_game.dart';
 import 'game_engine.dart';
 
 class GameWidget extends StatefulWidget {
@@ -25,15 +25,10 @@ class _GameWidgetState extends State<GameWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Column(
-        children: [Expanded(child: _gameEngine.widget), StreamBuilder<int>(
-          stream: _game.goldStream,
-          builder: (context, snapshot) {
-            return BuilderPane(snapshot.data ?? 0);
-          }
-        )],
-    ),
-      ));
+        home: Scaffold(
+      body: Column(
+        children: [Expanded(child: _gameEngine.widget), BuilderPane(_game)],
+      ),
+    ));
   }
 }
