@@ -7,22 +7,22 @@ import 'package:colortd/grid/GridHelper.dart';
 import 'package:colortd/tower/projectile_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/particle.dart';
-import 'package:flame/particles/circle_particle.dart';
-import 'package:flame/particles/moving_particle.dart';
 import 'package:flutter/material.dart';
 
 class TowerComponent extends PositionComponent with HasGameRef<GameEngine> {
 
   static const double ATTACK_RATE = 0.6;
   static const int RANGE = 7;
+  final Color color;
   double _attackTimeCounter = 0;
   Rect gridRect = Rect.fromLTWH(0, 0, 0, 0);
+
+  TowerComponent(this.color);
 
   @override
   void render(Canvas c) {
     final paint = Paint()
-      ..color = Colors.teal
+      ..color = color
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
 

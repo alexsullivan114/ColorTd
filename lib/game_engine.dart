@@ -65,7 +65,7 @@ class GameEngine extends BaseGame with TapDetector, PanDetector {
     final gridRect = Rect.fromLTWH(point.x.toDouble(), point.y.toDouble(), 1, 1);
     final towerRects = towers.map((e) => e.gridRect);
     if (!towerRects.contains(gridRect) && _game.gold > 0) {
-      final tower = TowerComponent()
+      final tower = TowerComponent(_game.selectedColor)
         ..gridRect = gridRect;
       towers.add(tower);
       add(tower);
